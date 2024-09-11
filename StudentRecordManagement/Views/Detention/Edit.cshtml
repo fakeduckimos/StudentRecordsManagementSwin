@@ -1,0 +1,89 @@
+﻿@using StudentRecordManagement.Models.Entities.Forms
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model StudentRecordManagement.Models.Entities.Forms.Detention
+
+<h1>Edit Detention</h1>
+
+@if (Model is null)
+{
+    <p>No leave pass was found with this Id</p>
+}
+else
+{
+    <form method="post">
+        <div class="mt-3">
+            <input type="hidden" class="form-control" asp-for="Id" readonly />
+            <label class="form-label">Status</label>
+            <input type="text" class="form-control" asp-for="Status" readonly />
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">Student</label>
+            @Html.DropDownListFor(model => model.StudentId, ViewBag.StudentList as SelectList, "--- Select student ---", new { @class = "form-control", @disabled = "disabled" })
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">Detention Time</label>
+
+            @if (Model.Status == DetentionStatus.DetentionCompleted)
+            {
+                <input type="text" class="form-control" asp-for="DetentionTime" readonly />
+            }
+            else
+            {
+                <select asp-for="DetentionTime" class="form-control" asp-items="Html.GetEnumSelectList<DetentionTime>()"> </select>
+            }
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">Predefined Reason</label>
+            @if (Model.Status == DetentionStatus.DetentionCompleted)
+            {
+                <input type="text" class="form-control" asp-for="PredefinedReasons" readonly />
+            } else
+            {
+                <select asp-for="PredefinedReasons" class="form-control" asp-items="Html.GetEnumSelectList<PredefinedReasons>()"></select>
+            }
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">Breach Reason</label><br />
+            @Html.TextAreaFor(model => model.BreachReason, 5, 60, null);
+        </div>
+
+        <div class="mt-3">
+            <div class="mt-3">
+                <button type="submit" class="btn btn-secondary">Save</button>
+                
+
+                @if (Model.Status == DetentionStatus.NonProcessed)
+                {
+                    <button type="submit" class="btn btn-primary ms-3"
+                            asp-action="Complete"
+                            asp-controller="Detention">
+                        Complete
+                    </button>
+                }
+
+                @if (Model.Status == DetentionStatus.DetentionCompleted)
+                {
+                    <button type="submit" class="btn btn-primary ms-3"
+                            asp-action="CompletedToNonProcessed"
+                            asp-controller="Detention">
+                        Back to Non-Processed
+                    </button>
+                }
+
+                <button type="submit" class="btn btn-danger ms-3"
+                        asp-action="Delete"
+                        asp-controller="Detention">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </form>
+}

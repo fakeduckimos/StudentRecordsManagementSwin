@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@* <div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div> *@
+
+@model List<StudentRecordManagement.Models.Entities.Forms.FormRecord>
+
+<h1>Form Records</h1>
+
+@if (Model.Count != 0)
+{
+    <table class="table">
+        <thead>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Record Date</th>
+        <th>Modified</th>
+        </thead>
+        <tbody>
+            @foreach (var formRecord in Model)
+            {
+                <tr>
+                    <td>@formRecord.GetType().Name</td>
+                    <td>@formRecord.Student.Firstname @formRecord.Student.Surname</td>
+                    <td>@formRecord.RecordDate</td>
+                    <td>@formRecord.Modified</td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="@formRecord.GetType().Name" asp-action="Edit" asp-route-id="@formRecord.Id">Edit</a>
+                    </td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There is no form record in the system</p>
+}

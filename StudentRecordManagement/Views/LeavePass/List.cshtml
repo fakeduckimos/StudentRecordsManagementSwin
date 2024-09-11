@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<StudentRecordManagement.Models.Entities.Forms.LeavePass>
+
+<h1>Leave Pass</h1>
+
+@if (Model.Count != 0)
+{
+    <table class="table">
+        <thead>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Sign Out Datetime</th>
+        <th> </th>
+        </thead>
+        <tbody>
+            @foreach (var leavepass in Model)
+            {
+                <tr>
+                    <td>@leavepass.Id</td>
+                    <td>@leavepass.Student.Firstname @leavepass.Student.Surname</td>
+                    <td>@leavepass.SignOutDateTime</td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="LeavePass" asp-action="Edit" asp-route-id="@leavepass.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There is no leave pass records in the system</p>
+}
+
+<div class="mt-3">
+    @* <button type="button" class="btn btn-primary ms-3"
+    asp-action="Add"
+    asp-controller="StudentDetails">
+    Add Student
+    </button> *@
+    <a href="@Url.Action("Add", "LeavePass")" class="btn btn-primary">Add Leave Pass</a>
+</div>
